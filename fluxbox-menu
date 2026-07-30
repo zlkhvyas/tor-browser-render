@@ -1,0 +1,9 @@
+[begin] (Tor Access)
+[exec] (Open Tor Browser) {/opt/tor-browser/Browser/start-tor-browser --verbose --allow-root}
+[exec] (Terminal) {xterm}
+[submenu] (System)
+  [exec] (Restart Tor Browser) {pkill -f start-tor-browser; sleep 1; /opt/tor-browser/Browser/start-tor-browser --verbose --allow-root}
+[end]
+[restart] (Restart Fluxbox)
+[exit] (Exit)
+[end]
