@@ -46,6 +46,10 @@ RUN wget -q "https://dist.torproject.org/torbrowser/${TOR_BROWSER_VERSION}/tor-b
     && rm /tmp/tor-browser.tar.xz
 # The tarball extracts to /opt/tor-browser already — no rename needed.
 
+# --- Non-root user: start-tor-browser refuses to run as root, no flag bypasses this ---
+RUN useradd -m -s /bin/bash torbrowser \
+    && chown -R torbrowser:torbrowser /opt/tor-browser
+
 # --- Supervisor config controls all processes in this single container ---
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY start.sh /start.sh
