@@ -34,13 +34,15 @@ RUN git clone --branch ${NOVNC_VERSION} --depth 1 https://github.com/novnc/noVNC
 
 # --- Download Tor Browser (English, Linux x86_64) ---
 # Pin a version explicitly rather than "latest" so builds are reproducible.
-# Check https://www.torproject.org/download/ for the current version string.
-ARG TOR_BROWSER_VERSION=13.5.6
+# Verify against https://dist.torproject.org/torbrowser/ before bumping —
+# old versions get deleted from this index once superseded, which is what
+# caused the previous wget failure (exit code 8 = HTTP error, i.e. 404).
+ARG TOR_BROWSER_VERSION=15.0.19
 RUN wget -q "https://dist.torproject.org/torbrowser/${TOR_BROWSER_VERSION}/tor-browser-linux-x86_64-${TOR_BROWSER_VERSION}.tar.xz" \
     -O /tmp/tor-browser.tar.xz \
     && tar -xJf /tmp/tor-browser.tar.xz -C /opt/ \
-    && rm /tmp/tor-browser.tar.xz \
-    && mv /opt/tor-browser* /opt/tor-browser
+    && rm /tmp/tor-browser.tar.xz
+# The tarball extracts to /opt/tor-browser already — no rename needed.
 
 # --- Supervisor config controls all processes in this single container ---
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
