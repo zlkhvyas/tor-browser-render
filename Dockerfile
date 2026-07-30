@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     websockify \
     git \
     wget \
+    xz-utils \
     ca-certificates \
     supervisor \
     locales \
