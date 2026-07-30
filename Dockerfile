@@ -2,7 +2,11 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# --- Base desktop + VNC deps (novnc removed — we build it from source below) ---
+# --- Base desktop + VNC deps + Tor Browser's runtime shared libraries ---
+# NOTE: firefox-esr is a Debian package name and does not exist in Ubuntu's
+# repos — Tor Browser ships its own bundled Firefox binary, so we don't need
+# a Firefox package at all. We just need the shared libs that bundled binary
+# links against at runtime.
 RUN apt-get update && apt-get install -y --no-install-recommends \
     xvfb \
     fluxbox \
@@ -14,7 +18,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     supervisor \
     locales \
     xdg-utils \
-    firefox-esr \
+    libgtk-3-0 \
+    libx11-xcb1 \
+    libdbus-glib-1-2 \
+    libxtst6 \
+    libasound2 \
+    libnss3 \
+    libxss1 \
     && rm -rf /var/lib/apt/lists/*
 
 # --- Clone a pinned noVNC release (not master) so builds are reproducible ---
