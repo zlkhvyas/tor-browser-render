@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: tor-browser-remote
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: VNC_PASSWORD
+        sync: false   # set this manually in the Render dashboard, not in git
+    healthCheckPath: /
