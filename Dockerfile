@@ -49,6 +49,7 @@ RUN wget -q "https://dist.torproject.org/torbrowser/${TOR_BROWSER_VERSION}/tor-b
 # --- Supervisor config controls all processes in this single container ---
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY start.sh /start.sh
+COPY fluxbox-menu /root/.fluxbox/menu
 RUN sed -i 's/\r$//' /start.sh && chmod +x /start.sh
 
 # Render injects $PORT at runtime — the container must listen on it.
